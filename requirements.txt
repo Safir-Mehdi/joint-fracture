@@ -1,0 +1,18 @@
+# ----- Core Framework -----
+torch
+
+# ----- Core Libraries -----
+torchvision
+numpy
+pandas
+scikit-learn
+pillow
+
+# ----- For Augmentation -----
+albumentations
+
+# ----- For Visualizations & Metrics -----
+matplotlib
+seaborn
+tqdm
+pyyaml

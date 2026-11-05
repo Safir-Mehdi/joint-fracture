@@ -1,0 +1,33 @@
+# ============================================================
+#  .gitignore — Joint Fracture Classification
+#  Minimal version — only files/folders created so far.
+#  We'll add more rules as the project grows.
+# ============================================================
+
+# ── Python cache ──
+__pycache__/
+*.pyc
+*.pyo
+
+# ── Virtual environment ──
+venv/
+.venv/
+env/
+
+# ── IDE / Editor ──
+.vscode/
+.idea/
+*.swp
+
+# ── OS junk ──
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ── Experiments (auto-generated runs — will be created later) ──
+experiments/
+!experiments/.gitkeep
+
+# ── Jupyter checkpoints (notebooks folder will stay empty for now) ──
+.ipynb_checkpoints/
+!notebooks/.gitkeep
