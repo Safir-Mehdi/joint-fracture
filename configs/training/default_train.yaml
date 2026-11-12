@@ -1,0 +1,17 @@
+augmentation:
+  train:
+    horizontal_flip_p: 0.5
+    rotation_degrees: 15
+    rotation_p: 0.5
+    brightness: 0.2
+    contrast: 0.2
+    color_jitter_p: 0.3
+  val:
+    # No randomness in val — nothing to configure
+
+seed: 42
+
+dataloader:
+  batch_size: 16
+  num_workers: 4
+  use_weighted_sampler: true  # 2.5:1 imbalance → keep balanced batches

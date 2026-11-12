@@ -28,11 +28,6 @@ bone-fracture-detection/
 │   │   ├── val/
 │   │   └── test/
 │   ├── processed/                    # Preprocessed data
-│   ├── annotations/                  # Bounding boxes / masks / labels
-│   │   ├── train.json
-│   │   ├── val.json
-│   │   └── test.json
-│   ├── splits/                       # Train/val/test split indices
 │   └── README.md                     # Dataset documentation
 │
 ├── src/
@@ -44,7 +39,6 @@ bone-fracture-detection/
 │   │   ├── dataloader.py             # DataLoader factory
 │   │   ├── preprocessing.py          # Resize, normalize, augment
 │   │   ├── augmentation.py           # Albumentations / torchvision transforms
-│   │   └── splitter.py               # Train/val/test splitting logic
 │   │
 │   ├── models/
 │   │   ├── __init__.py
@@ -81,6 +75,8 @@ bone-fracture-detection/
 │   │
 │   └── utils/
 │       ├── __init__.py
+│       ├── path.py                     # Added for finding root path
+│       ├── dataset_stats.py            # Added for calculating Mean and Std to normalize pixel values
 │       ├── logger.py
 │       ├── seed.py                   # Reproducibility
 │       ├── config_loader.py
@@ -125,7 +121,10 @@ bone-fracture-detection/
 │
 ├── tests/                            # Unit tests
 │   ├── __init__.py
+│   ├── test_augmentation.py
+│   ├── test_dataloader.py
 │   ├── test_dataset.py
+│   ├── test_preprocessing.py
 │   ├── test_models.py
 │   ├── test_metrics.py
 │   └── test_training.py

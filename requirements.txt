@@ -16,3 +16,8 @@ matplotlib
 seaborn
 tqdm
 pyyaml
+
+# ----- Other Libraries -----
+pytest
+python-dotenv
+pyyaml

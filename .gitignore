@@ -23,6 +23,7 @@ env/
 .DS_Store
 Thumbs.db
 desktop.ini
+.env
 
 # ── Experiments (auto-generated runs — will be created later) ──
 experiments/
@@ -31,3 +32,10 @@ experiments/
 # ── Jupyter checkpoints (notebooks folder will stay empty for now) ──
 .ipynb_checkpoints/
 !notebooks/.gitkeep
+
+# ── Datasets (removed from repo — private) ──
+data/
+!data/.gitkeep
+
+# ── Unignore src/data/ ──
+!src/data/
