@@ -1,17 +1,84 @@
+# =========================================================
+# Training config — shared by all models
+# Model-specific overrides go in configs/models/*.yaml
+# =========================================================
+
+
+# ── Augmentation ────────────────────────────────────────────────
 augmentation:
   train:
-    horizontal_flip_p: 0.5
-    rotation_degrees: 15
-    rotation_p: 0.5
-    brightness: 0.2
-    contrast: 0.2
-    color_jitter_p: 0.3
+    horizontal_flip_p: 0.5   # probability of random horizontal flip
+    rotation_degrees: 15     # max rotation angle in degrees (-15 to +15)
+    rotation_p: 0.5          # probability of applying random rotation
+    brightness: 0.2          # brightness jitter factor (±20%)
+    contrast: 0.2            # contrast jitter factor (±20%)
+    color_jitter_p: 0.3      # probability of applying brightness/contrast jitter
   val:
     # No randomness in val — nothing to configure
 
-seed: 42
+# ── Random Seed ────────────────────────────────────────────────
+seed: 42                       # global RNG seed for reproducibility
 
+# ── Dataloader ────────────────────────────────────────────────
 dataloader:
-  batch_size: 16
-  num_workers: 4
+  batch_size: 16               # number of samples per batch
+  num_workers: 4               # subprocesses for parallel data loading (0 = main process)
   use_weighted_sampler: true  # 2.5:1 imbalance → keep balanced batches
+
+# ── Loss ────────────────────────────────────────────────
+loss:
+  name: focal                   # default: "focal" | "cross_entropy"
+  # use class weights for imbalance
+  class_weights: null           # null = compute from data, or [0.29, 0.71]
+  # focal-specific params (only used if name == "focal")
+  focal_gamma: 2.0              # focusing parameter
+  focal_alpha: null             # null = auto from class_weights, or scalar
+
+# ── Optimizer ────────────────────────────────────────────────
+optimizer:
+  name: adamw                  # "adamw" | "adam" | "sgd"
+  lr: 0.0001                   # base learning rate
+  weight_decay: 0.01           # L2 regularization (applied only to weights, not biases/BN)
+  momentum: 0.9                # only used if name == "sgd"
+
+# ── Scheduler ────────────────────────────────────────────────
+scheduler:
+  name: cosine_annealing       # "cosine_annealing" | "step" | "reduce_on_plateau" | "none"
+
+  # cosine_annealing params
+  warmup_epochs: 3             # linear warmup from 0 → lr over first N epochs
+  min_lr: 0.000001             # floor for cosine descent
+
+  # step params (only used if name == "step")
+  step_size: 10                # halve/decay every N epochs
+  gamma: 0.1                   # decay factor
+
+  # reduce_on_plateau params (only used if name == "reduce_on_plateau")
+  factor: 0.1                  # lr *= factor when metric plateaus
+  patience: 5                  # epochs to wait before reducing
+
+# ── Training loop ────────────────────────────────────────────
+training:
+  epochs: 60                   # max epochs (early stopping may end sooner)
+  grad_clip: 1.0               # max gradient norm (0 = disabled)
+  use_amp: true                # Automatic Mixed Precision (2x faster on modern GPUs)
+  log_every_n_steps: 20        # log loss every N batches
+
+# ── Early stopping ───────────────────────────────────────────
+early_stopping:
+  enabled: true
+  patience: 10                 # stop if val_f1 doesn't improve for 10 epochs
+  monitor: val_f1              # "val_f1" | "val_loss" | "val_acc"
+  mode: max                    # "max" for F1/acc, "min" for loss
+  min_delta: 0.001             # improvement threshold (ignore tiny fluctuations)
+
+# ── Checkpointing ────────────────────────────────────────────
+checkpoint:
+  save_best_only: true         # only overwrite best.pth when metric improves
+  monitor: val_f1              # same metric as early stopping
+  mode: max
+
+# ── Logging ──────────────────────────────────────────────────
+logging:
+  tensorboard: true            # write TensorBoard logs to logs/
+  save_plots: true             # generate loss/accuracy curves at end

@@ -1,0 +1,18 @@
+# AlexNet — ImageNet-pretrained (~61M params).
+# Partial fine-tune: freeze backbone, unfreeze last convs + last FCs.
+# fine_tune_mode: full / partial / head_only
+
+
+model:
+  name: alexnet
+  num_classes: 2
+  pretrained: true
+  image_size: 224
+
+  # Transfer-learning strategy (applied by trainer)
+  fine_tune_mode: partial
+  unfreeze_patterns:
+    - "backbone.features.10"           # last conv block (Conv → ReLU)
+    - "backbone.features.12"           # last conv block (Conv → ReLU → Pool)
+    - "backbone.classifier.4"          # penultimate Linear
+    - "backbone.classifier.6"          # final Linear (the new head)

@@ -1,0 +1,16 @@
+# Swin-Tiny — hierarchical Vision Transformer, ImageNet-pretrained (~28.3M params).
+# Partial fine-tune: freeze early stages, unfreeze last stage + head.
+# Uses standard 224×224 input (unlike ViT).
+# fine_tune_mode: full / partial / head_only
+
+model:
+  name: swin_tiny
+  num_classes: 2
+  pretrained: true
+  image_size: 224
+
+  # Transfer-learning strategy (applied by trainer)
+  fine_tune_mode: partial
+  unfreeze_patterns:
+    - "backbone.features.7"            # last stage (~15M params)
+    - "backbone.head"                  # the new head

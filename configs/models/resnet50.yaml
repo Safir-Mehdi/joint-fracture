@@ -1,0 +1,14 @@
+# ResNet50 — ImageNet-pretrained (~25.6M params).
+# Partial fine-tune: freeze backbone, unfreeze layer4 + head.
+# fine_tune_mode: full / partial / head_only
+
+model:
+  name: resnet50
+  num_classes: 2
+  pretrained: true
+  image_size: 224
+
+  # Transfer-learning strategy (applied by trainer)
+  fine_tune_mode: partial              # freeze early, train late + head
+  unfreeze_patterns:
+    - "backbone.layer4"                # unfreeze ResNet's last conv block

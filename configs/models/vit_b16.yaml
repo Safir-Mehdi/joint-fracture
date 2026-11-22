@@ -1,0 +1,19 @@
+# ViT-B/16 — Vision Transformer, ImageNet-pretrained (~85.8M params).
+# ⚠️ Uses 384×384 input (ViT-B/16 pretrained at 384, not 224).
+# Partial fine-tune: freeze early encoder blocks, unfreeze last block + head.
+# fine_tune_mode: full / partial / head_only
+
+model:
+  name: vit_b16
+  num_classes: 2
+  pretrained: true
+  image_size: 384                # ⚠️ ViT-B/16 standard is 384, not 224
+
+  # Transfer-learning strategy (applied by trainer)
+  fine_tune_mode: partial
+  unfreeze_patterns:
+    - "backbone.encoder.layers.11"     # last transformer block (~7M params)
+    - "backbone.heads"                 # the new head (heads.head)
+
+optimizer:
+  lr: 0.00005                          # ViT needs lower LR — pretrained transformer is sensitive

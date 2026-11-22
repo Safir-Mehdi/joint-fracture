@@ -3,6 +3,7 @@ torch
 
 # ----- Core Libraries -----
 torchvision
+tensorboard
 numpy
 pandas
 scikit-learn
@@ -16,6 +17,7 @@ matplotlib
 seaborn
 tqdm
 pyyaml
+torchinfo        # ← model.summary() in PyTorch (Keras-style)
 
 # ----- Other Libraries -----
 pytest

@@ -1,0 +1,15 @@
+# ConvNeXt-Tiny — ImageNet-pretrained (~27.8M params).
+# Partial fine-tune: freeze early stages, unfreeze last stage + head.
+# fine_tune_mode: full / partial / head_only
+
+model:
+  name: convnext_tiny
+  num_classes: 2
+  pretrained: true
+  image_size: 224
+
+  # Transfer-learning strategy (applied by trainer)
+  fine_tune_mode: partial
+  unfreeze_patterns:
+    - "backbone.features.7"            # last stage (~15M params)
+    - "backbone.classifier"            # the new head (classifier[2])

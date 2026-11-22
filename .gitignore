@@ -6,6 +6,7 @@
 
 # ── Python cache ──
 __pycache__/
+.pytest_cache
 *.pyc
 *.pyo
 
@@ -39,3 +40,6 @@ data/
 
 # ── Unignore src/data/ ──
 !src/data/
+
+# ── Ignore All Smoke Tests ──
+notebooks/smoke_tests.ipynb

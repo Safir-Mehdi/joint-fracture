@@ -1,0 +1,16 @@
+# EfficientNet-B3 — ImageNet-pretrained (~12.2M params).
+# Partial fine-tune: freeze early stages, unfreeze last stage + head.
+# fine_tune_mode: full / partial / head_only
+# ⚠️ Uses 300×300 input (B3 standard, not 224).
+
+model:
+  name: efficientnet_b3
+  num_classes: 2
+  pretrained: true
+  image_size: 300                # ⚠️ B3 standard is 300, not 224
+
+  # Transfer-learning strategy (applied by trainer)
+  fine_tune_mode: partial
+  unfreeze_patterns:
+    - "backbone.features.8"              # last MBConv stage (~1.1M params)
+    - "backbone.classifier"              # the new head (classifier[1])

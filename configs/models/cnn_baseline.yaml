@@ -1,0 +1,16 @@
+# CNN baseline — from-scratch 4-block CNN (~389K params).
+# No pretrained weights exist for this model — `pretrained` is ignored.
+# fine_tune_mode: full / partial / head_only
+
+model:
+  name: cnn_baseline
+  num_classes: 2
+  pretrained: false        # ignored (no pretrained version exists) — warns at runtime
+  image_size: 224
+
+  # Transfer-learning strategy (applied by trainer)
+  fine_tune_mode: full     # from scratch → train everything
+  unfreeze_patterns: []    # not used when fine_tune_mode == "full"
+
+optimizer:
+  lr: 0.001                # from-scratch CNN needs higher LR

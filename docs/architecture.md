@@ -42,22 +42,25 @@ bone-fracture-detection/
 │   │
 │   ├── models/
 │   │   ├── __init__.py
-│   │   ├── base_model.py             # Abstract base class
-│   │   ├── cnn_baseline.py
-│   │   ├── resnet.py
-│   │   ├── vgg.py
-│   │   ├── efficientnet.py
-│   │   ├── densenet.py
-│   │   ├── vit.py
-│   │   ├── yolo_detector.py          # If doing bounding-box detection
-│   │   └── model_factory.py          # Registry to build models by name
+│   │   ├── base_model.py             # Abstract base class — consistent interface for all models
+│   │   ├── cnn_baseline.py           # Simple 4-layer CNN (~1M params) — tiny baseline
+│   │   ├── alexnet.py                # AlexNet (~60M params) — classic 2012 ImageNet winner
+│   │   ├── vgg.py                    # VGG16 (~138M params) — classic deep CNN
+│   │   ├── resnet.py                 # ResNet50 (~25M params) — modern benchmark
+│   │   ├── densenet.py               # DenseNet121 (~8M params) — medical imaging favorite
+│   │   ├── efficientnet.py           # EfficientNet-B3 (~12M params) — strong on FracAtlas
+│   │   ├── mobilenet.py              # MobileNetV3 (~5M params) — lightweight / deployable
+│   │   ├── convnext.py               # ConvNeXt-Tiny (~28M params) — advanced CNN (SOTA family)
+│   │   ├── vit.py                    # ViT-B/16 (~86M params) — standard Vision Transformer
+│   │   ├── swin.py                   # Swin-Tiny (~28M params) — advanced hierarchical ViT
+│   │   └── model_factory.py          # Registry: build_model("resnet50", num_classes=2)
 │   │
 │   ├── training/
 │   │   ├── __init__.py
 │   │   ├── trainer.py                # Main training loop
 │   │   ├── loss.py                   # Loss functions (CE, Focal, BCE)
 │   │   ├── optimizer.py              # Optimizer & scheduler factory
-│   │   ├── callbacks.py              # EarlyStopping, Checkpoint, Logging
+│   │   ├── callbacks.py              # EarlyStopping, Checkpoint, Logging, ...
 │   │   └── cross_validation.py       # K-fold CV
 │   │
 │   ├── evaluation/
@@ -81,10 +84,12 @@ bone-fracture-detection/
 │       ├── seed.py                   # Reproducibility
 │       ├── config_loader.py
 │       ├── visualization.py
+│       ├── plots.py
 │       └── file_io.py
 │
 ├── scripts/                          # Entry-point scripts
 │   ├── prepare_data.py               # Preprocess & build splits
+│   ├── model_summary.py
 │   ├── train.py                      # Train a single model
 │   ├── train_all.py                  # Train all models sequentially
 │   ├── evaluate.py                   # Evaluate a trained model
@@ -99,6 +104,7 @@ bone-fracture-detection/
 │   ├── 03_model_training_demo.ipynb
 │   ├── 04_results_comparison.ipynb
 │   └── 05_visualization_gradcam.ipynb
+│   └── smoke_tests.ipynb
 │
 ├── experiments/                      # Training runs (gitignored)
 │   └── run_YYYYMMDD_HHMMSS/
@@ -123,11 +129,17 @@ bone-fracture-detection/
 │   ├── __init__.py
 │   ├── test_augmentation.py
 │   ├── test_dataloader.py
+│   ├── cnn_baseline.py
 │   ├── test_dataset.py
 │   ├── test_preprocessing.py
 │   ├── test_models.py
 │   ├── test_metrics.py
 │   └── test_training.py
+├── weights/                          # 🆕 Final trained model weights (gitignored, kept locally)
+│   ├── README.md                     # Explains purpose + how to obtain weights
+│   └── <model_name>/                 # One folder per model
+│       ├── best.pth                  # The actual trained weights
+│       └── config.yaml               # Config that produced these weights
 │
 └── docs/
     ├── architecture.md

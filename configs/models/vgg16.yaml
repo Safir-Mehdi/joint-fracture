@@ -1,0 +1,21 @@
+# VGG16 — ImageNet-pretrained (~138M params).
+# Partial fine-tune: freeze early layers, unfreeze last convs + last FCs.
+# fine_tune_mode: full / partial / head_only
+# ⚠️ Largest model — watch GPU memory.
+
+model:
+  name: vgg16
+  num_classes: 2
+  pretrained: true
+  image_size: 224
+
+  # Transfer-learning strategy (applied by trainer)
+  fine_tune_mode: partial
+  unfreeze_patterns:
+    - "backbone.features.24"           # last conv in block 4 (Conv→ReLU)
+    - "backbone.features.27"           # last conv in block 5 (Conv→ReLU→Pool)
+    - "backbone.classifier.3"          # penultimate Linear
+    - "backbone.classifier.6"          # final Linear (the new head)
+
+optimizer:
+  lr: 0.00005

@@ -1,0 +1,17 @@
+# DenseNet121 — ImageNet-pretrained (~8M params).
+# Partial fine-tune: freeze early layers, unfreeze last dense block + head.
+# fine_tune_mode: full / partial / head_only
+
+
+model:
+  name: densenet121
+  num_classes: 2
+  pretrained: true
+  image_size: 224
+
+  # Transfer-learning strategy (applied by trainer)
+  fine_tune_mode: partial
+  unfreeze_patterns:
+    - "backbone.features.denseblock4"      # last dense block (~1M params)
+    - "backbone.features.norm5"            # final BatchNorm after denseblock4
+    - "backbone.classifier"                # the new head

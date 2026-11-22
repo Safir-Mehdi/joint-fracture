@@ -1,0 +1,15 @@
+# MobileNetV3-Large — ImageNet-pretrained (~5.5M params, lightest model).
+# Partial fine-tune: freeze early blocks, unfreeze last conv block + head.
+# fine_tune_mode: full / partial / head_only
+
+model:
+  name: mobilenet_v3
+  num_classes: 2
+  pretrained: true
+  image_size: 224
+
+  # Transfer-learning strategy (applied by trainer)
+  fine_tune_mode: partial
+  unfreeze_patterns:
+    - "backbone.features.16"           # last conv block (~1M params)
+    - "backbone.classifier"            # the new head (classifier[3])

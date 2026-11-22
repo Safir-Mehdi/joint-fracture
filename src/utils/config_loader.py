@@ -6,7 +6,7 @@ Usage:
     cfg = load_config()                                  # base only
     cfg = load_config("base_config.yaml")                # same
     cfg = load_config(model="resnet50")                  # base + model merged
-    cfg = load_config(model="resnet50", training=True)   # base + model + training
+    cfg = load_config(model="resnet50", training=True)   # base + training + model
 """
 
 import yaml
@@ -32,15 +32,15 @@ def load_config(base: str = "base_config.yaml",
     """
     merged = _read_yaml(CONFIG_DIR / base)
 
+    if training:
+            train_path = CONFIG_DIR / "training" / "default_train.yaml"
+            if train_path.exists():
+                merged.update(_read_yaml(train_path))
+
     if model:
         model_path = CONFIG_DIR / "models" / f"{model}.yaml"
         if not model_path.exists():
             raise FileNotFoundError(f"Model config not found: {model_path}")
         merged.update(_read_yaml(model_path))
-
-    if training:
-        train_path = CONFIG_DIR / "training" / "default_train.yaml"
-        if train_path.exists():
-            merged.update(_read_yaml(train_path))
 
     return merged
